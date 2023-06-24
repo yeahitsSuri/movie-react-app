@@ -9,7 +9,7 @@ const RemoveFavourites = () => {
 
     return (
         <>
-            <span className="mr-2">Add to Favorites</span>
+            <span className="mr-2">Remove From Favorites</span>
             <span style={iconStyle}>
                 <FontAwesomeIcon icon={faHeartCrack} />
             </span>

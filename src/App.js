@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css"
 import './App.css';
 import MovieList from './components/MovieList';
@@ -6,6 +7,7 @@ import MovieListHeader from './components/MovieListHeader';
 import SearchBar from './components/SearchBar';
 import AddFavourites from './components/AddFavourites';
 import RemoveFavourites from './components/RemoveFavourites';
+import MovieIntroScreen from './screen/MovieIntroScreen';
 
 const App = () => {
   const [movies, setMovies] = useState([]);
@@ -15,13 +17,10 @@ const App = () => {
 
   const getMovieFromAPI = async(searchKey) => {
     const url = `http://www.omdbapi.com/?s=${searchKey}&apikey=a52e368a`;
-    //search for movies with game in its title
-
     const response = await fetch(url);
     const responseJson = await response.json();
 
-    //console.log(responseJson);
-    if (responseJson.Search) {
+    if (responseJson.Search) { 
       setMovies(responseJson.Search)
     }
   };
@@ -34,7 +33,7 @@ const App = () => {
     const movieFavs = JSON.parse(
       localStorage.getItem('movie-react-app-favs')
       );
-      setFavourites(movieFavs);
+    setFavourites(movieFavs);
   }, []);
 
   const saveToLocal = (item) => {
@@ -55,31 +54,50 @@ const App = () => {
     saveToLocal(newFavouriteList);
   };
 
+  return (
+    <Router>
+      <div className='container-fluid movie-app'>
+        <div className='row d-flex align-items-center mt-3 mb-4'>
+          <MovieListHeader header='Movies'/>
+          <SearchBar searchKey={searchKey} setSearchKey={setSearchKey}/>
+        </div>
 
-  return (<div className = 'container-fluid movie-app'>
-    <div className='row d-flex align-items-center mt-3 mb-4'>
-      <MovieListHeader header = 'Movies'/>
-      <SearchBar searchKey = {searchKey} setSearchKey = {setSearchKey}/>
-    </div>
-    <div className='row'>
-      <MovieList movies = {movies}
-      handleFavouritesClick={addFavouriteMovie}
-      favoriteIcon = {AddFavourites}/> 
-    </div>  
-    <div className='row d-flex align-items-center mt-3 mb-4'>
-      <MovieListHeader header = 'Favourites'/>
-    </div>
-    <div>
-      <div className='row'>
-        <MovieList
-          movies={favourites}
-          handleFavouritesClick={removeFavouriteMovie}
-          favoriteIcon={RemoveFavourites}
-        />
+        <div className='row d-flex align-items-center mt-3 mb-4'>
+          <MovieListHeader header='Searching Results: '/>
+        </div>
+
+        <div className='row'>
+          <MovieList
+            movies={movies}
+            handleFavouritesClick={addFavouriteMovie}
+            favoriteIcon={AddFavourites}
+          />
+        </div>  
+
+        <div className='row d-flex align-items-center mt-3 mb-4'>
+          <MovieListHeader header='Favourites'/>
+        </div>
+
+        <div>
+          <div className='row'>
+            <MovieList
+              movies={favourites}
+              handleFavouritesClick={removeFavouriteMovie}
+              favoriteIcon={RemoveFavourites}
+            />
+          </div>
+        </div>
+
+        <Routes>
+          <Route
+            path="/movies/:id"
+            element={
+              <MovieIntroScreen movies={movies} favourites={favourites} />
+            }
+          />
+        </Routes>
       </div>
-      
-    </div>
-  </div>
+    </Router>
   )
 };
 
