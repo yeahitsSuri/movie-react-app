@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate} from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css"
 import './App.css';
-import HomePage from './screen/HomePage';
-import MovieIntroScreen from './screen/MovieIntroScreen';
+import HomePage from "./home-page/HomePage";
+import MovieIntroScreen from './home-page/MovieIntroScreen';
 import SearchBar from './components/SearchBar'
 import WebHeader from './components/WebHeader';
 
