@@ -46,7 +46,7 @@ const App = () => {
 
   useEffect(() => {
     const movieFavs = JSON.parse(localStorage.getItem('movie-react-app-favs'));
-    setFavourites(movieFavs);
+    setFavourites(movieFavs || []); // use an empty array if movieFavs is null
   }, []);
 
   const saveToLocal = (item) => {
