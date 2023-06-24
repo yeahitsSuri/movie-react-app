@@ -38,3 +38,15 @@ body {
   padding: 20px;
   text-align: center;
 }
+
+.home-link {
+  color: white;
+  text-decoration: none;
+}
+
+.btn-link:hover {
+  color: white;
+  font-size: 0.6em;
+  font-weight: bold;
+  text-decoration: none;
+}

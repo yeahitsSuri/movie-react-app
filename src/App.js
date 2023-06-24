@@ -1,52 +1,71 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate} from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css"
 import './App.css';
-import MovieList from './components/MovieList';
-import MovieListHeader from './components/MovieListHeader';
-import SearchBar from './components/SearchBar';
-import AddFavourites from './components/AddFavourites';
-import RemoveFavourites from './components/RemoveFavourites';
+import HomePage from './screen/HomePage';
 import MovieIntroScreen from './screen/MovieIntroScreen';
+import SearchBar from './components/SearchBar'
+import WebHeader from './components/WebHeader';
 
 const App = () => {
   const [movies, setMovies] = useState([]);
   const [searchKey, setSearchKey] = useState('');
+  const [favourites, setFavourites] = useState([]);
+  const [popularMovies, setPopularMovies] = useState([]);
 
-  const [favourites, setFavourites]= useState([]);
-
-  const getMovieFromAPI = async(searchKey) => {
+  const getMovieFromAPI = async (searchKey) => {
     const url = `http://www.omdbapi.com/?s=${searchKey}&apikey=a52e368a`;
     const response = await fetch(url);
     const responseJson = await response.json();
 
-    if (responseJson.Search) { 
-      setMovies(responseJson.Search)
+    if (responseJson.Search) {
+      setMovies(responseJson.Search);
     }
   };
 
-  useEffect(()=> {
+  const getPopularMovies = async () => {
+    const url = `http://www.omdbapi.com/?s=&apikey=a52e368a&plot=full&type=movie&r=json`;
+    const response = await fetch(url);
+    const responseJson = await response.json();
+  
+    if (responseJson.Response === 'True') {
+      const sortedMovies = responseJson.Search.sort((a, b) => {
+        return parseInt(b.imdbVotes.replace(/,/g, ''), 10) - parseInt(a.imdbVotes.replace(/,/g, ''), 10);
+      });
+      const popularMovies = sortedMovies.slice(0, 20);
+      setPopularMovies(popularMovies);
+    } else {
+      console.error(responseJson.Error);
+    }
+  };
+
+  useEffect(() => {
     getMovieFromAPI(searchKey);
+    getPopularMovies();
   }, [searchKey]);
 
-  useEffect(() =>{
-    const movieFavs = JSON.parse(
-      localStorage.getItem('movie-react-app-favs')
-      );
+  useEffect(() => {
+    const movieFavs = JSON.parse(localStorage.getItem('movie-react-app-favs'));
     setFavourites(movieFavs);
   }, []);
 
   const saveToLocal = (item) => {
-    localStorage.setItem('movie-react-app-favs', JSON.stringify(item))
+    localStorage.setItem('movie-react-app-favs', JSON.stringify(item));
   };
 
-  const addFavouriteMovie = (movie) =>{
-    const newFavouriteList = [...favourites, movie];
-    setFavourites(newFavouriteList);
-    saveToLocal(newFavouriteList);
+  const addFavouriteMovie = (movie) => {
+    // Check if the movie is already in the favorites list
+    const isAlreadyFavorite = favourites.some((favorite) => favorite.imdbID === movie.imdbID);
+  
+    // If the movie is not already in the favorites list, add it
+    if (!isAlreadyFavorite) {
+      const newFavouriteList = [...favourites, movie];
+      setFavourites(newFavouriteList);
+      saveToLocal(newFavouriteList);
+    }
   };
 
-  const removeFavouriteMovie = (movie) =>{
+  const removeFavouriteMovie = (movie) => {
     const newFavouriteList = favourites.filter(
       (favourite) => favourite.imdbID !== movie.imdbID
     );
@@ -58,37 +77,25 @@ const App = () => {
     <Router>
       <div className='container-fluid movie-app'>
         <div className='row d-flex align-items-center mt-3 mb-4'>
-          <MovieListHeader header='Movies'/>
+          <WebHeader header='Movies'/>
           <SearchBar searchKey={searchKey} setSearchKey={setSearchKey}/>
         </div>
 
-        <div className='row d-flex align-items-center mt-3 mb-4'>
-          <MovieListHeader header='Searching Results: '/>
-        </div>
-
-        <div className='row'>
-          <MovieList
-            movies={movies}
-            handleFavouritesClick={addFavouriteMovie}
-            favoriteIcon={AddFavourites}
-          />
-        </div>  
-
-        <div className='row d-flex align-items-center mt-3 mb-4'>
-          <MovieListHeader header='Favourites'/>
-        </div>
-
-        <div>
-          <div className='row'>
-            <MovieList
-              movies={favourites}
-              handleFavouritesClick={removeFavouriteMovie}
-              favoriteIcon={RemoveFavourites}
-            />
-          </div>
-        </div>
-
         <Routes>
+          <Route path="/" element={<Navigate to="/home"/>}/>
+          <Route
+            path="/home"
+            element={
+              <HomePage
+                movies={movies}
+                favourites={favourites}
+                popularMovies={popularMovies}
+                addFavouriteMovie={addFavouriteMovie}
+                removeFavouriteMovie={removeFavouriteMovie}
+              />
+            }
+          />
+
           <Route
             path="/movies/:id"
             element={
@@ -98,7 +105,7 @@ const App = () => {
         </Routes>
       </div>
     </Router>
-  )
+  );
 };
 
 export default App;
