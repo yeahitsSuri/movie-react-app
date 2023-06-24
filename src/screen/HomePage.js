@@ -1,23 +1,15 @@
 import React from 'react';
 import MovieList from '../components/MovieList';
 import MovieListHeader from '../components/MovieListHeader';
-import AddFavourites from '../components/AddFavourites';
-import RemoveFavourites from '../components/RemoveFavourites';
-import PopularMovies from '../components/PopularMovies';
+import AddFavorites from '../components/AddFavorites';
+import RemoveFavorites from '../components/RemoveFavorites';
 
-const HomePage = ({movies, favourites, popularMovies, addFavouriteMovie, removeFavouriteMovie}) => {
+const HomePage = ({movies, favorites, addFavoriteMovie, removeFavoriteMovie}) => {
     const showSearchResultsHeader = movies.length > 0;
 
     return (
         <>
-            <div className='row d-flex align-items-center mt-3 mb-4'>
-                <MovieListHeader header='Popular Movies'/>
-            </div>
-
-            <div className='row'>
-                <PopularMovies/>
-            </div>
-            
+            {/* Display Searching Results */}
             {showSearchResultsHeader && (
                 <div className='row d-flex align-items-center mt-3 mb-4'>
                     <MovieListHeader header='Searching Results: '/>
@@ -27,20 +19,21 @@ const HomePage = ({movies, favourites, popularMovies, addFavouriteMovie, removeF
             <div className='row'>
                 <MovieList
                     movies={movies}
-                    handleFavouritesClick={addFavouriteMovie}
-                    favoriteIcon={AddFavourites}
+                    handleFavoritesClick={addFavoriteMovie}
+                    favoriteIcon={AddFavorites}
                 />
             </div>
 
+            {/* Display User's Favorites */}
             <div className='row d-flex align-items-center mt-3 mb-4'>
-                <MovieListHeader header='Favourites'/>
+                <MovieListHeader header='Favorites'/>
             </div>
 
             <div className='row'>
                 <MovieList
-                movies={favourites}
-                handleFavouritesClick={removeFavouriteMovie}
-                favoriteIcon={RemoveFavourites}
+                movies={favorites}
+                handleFavoritesClick={removeFavoriteMovie}
+                favoriteIcon={RemoveFavorites}
                 />
             </div>
                 

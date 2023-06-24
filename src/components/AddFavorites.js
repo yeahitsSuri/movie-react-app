@@ -2,7 +2,7 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 
-const AddFavourites = () => {
+const AddFavorites = () => {
     const heartIconStyle = {
         marginLeft: "0.5rem", 
     };
@@ -17,4 +17,4 @@ const AddFavourites = () => {
     )
 }
 
-export default AddFavourites;
+export default AddFavorites;

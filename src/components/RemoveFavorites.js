@@ -2,7 +2,7 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeartCrack } from "@fortawesome/free-solid-svg-icons";
 
-const RemoveFavourites = () => {
+const RemoveFavorites = () => {
     const iconStyle = {
         marginLeft: "0.5rem", 
     };
@@ -17,4 +17,4 @@ const RemoveFavourites = () => {
     )
 }
 
-export default RemoveFavourites;
+export default RemoveFavorites;

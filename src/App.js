@@ -10,8 +10,7 @@ import WebHeader from './components/WebHeader';
 const App = () => {
   const [movies, setMovies] = useState([]);
   const [searchKey, setSearchKey] = useState('');
-  const [favourites, setFavourites] = useState([]);
-  const [popularMovies, setPopularMovies] = useState([]);
+  const [favorites, setFavorites] = useState([]);
 
   const getMovieFromAPI = async (searchKey) => {
     const url = `http://www.omdbapi.com/?s=${searchKey}&apikey=a52e368a`;
@@ -23,54 +22,37 @@ const App = () => {
     }
   };
 
-  const getPopularMovies = async () => {
-    const url = `http://www.omdbapi.com/?s=&apikey=a52e368a&plot=full&type=movie&r=json`;
-    const response = await fetch(url);
-    const responseJson = await response.json();
-  
-    if (responseJson.Response === 'True') {
-      const sortedMovies = responseJson.Search.sort((a, b) => {
-        return parseInt(b.imdbVotes.replace(/,/g, ''), 10) - parseInt(a.imdbVotes.replace(/,/g, ''), 10);
-      });
-      const popularMovies = sortedMovies.slice(0, 20);
-      setPopularMovies(popularMovies);
-    } else {
-      console.error(responseJson.Error);
-    }
-  };
-
   useEffect(() => {
     getMovieFromAPI(searchKey);
-    getPopularMovies();
   }, [searchKey]);
 
   useEffect(() => {
     const movieFavs = JSON.parse(localStorage.getItem('movie-react-app-favs'));
-    setFavourites(movieFavs || []); // use an empty array if movieFavs is null
+    setFavorites(movieFavs || []); // use an empty array if movieFavs is null
   }, []);
 
   const saveToLocal = (item) => {
     localStorage.setItem('movie-react-app-favs', JSON.stringify(item));
   };
 
-  const addFavouriteMovie = (movie) => {
+  const addFavoriteMovie = (movie) => {
     // Check if the movie is already in the favorites list
-    const isAlreadyFavorite = favourites.some((favorite) => favorite.imdbID === movie.imdbID);
+    const isAlreadyFavorite = favorites.some((favorite) => favorite.imdbID === movie.imdbID);
   
     // If the movie is not already in the favorites list, add it
     if (!isAlreadyFavorite) {
-      const newFavouriteList = [...favourites, movie];
-      setFavourites(newFavouriteList);
-      saveToLocal(newFavouriteList);
+      const newFavoriteList = [...favorites, movie];
+      setFavorites(newFavoriteList);
+      saveToLocal(newFavoriteList);
     }
   };
 
-  const removeFavouriteMovie = (movie) => {
-    const newFavouriteList = favourites.filter(
-      (favourite) => favourite.imdbID !== movie.imdbID
+  const removeFavoriteMovie = (movie) => {
+    const newFavoriteList = favorites.filter(
+      (favorite) => favorite.imdbID !== movie.imdbID
     );
-    setFavourites(newFavouriteList);
-    saveToLocal(newFavouriteList);
+    setFavorites(newFavoriteList);
+    saveToLocal(newFavoriteList);
   };
 
   return (
@@ -88,10 +70,9 @@ const App = () => {
             element={
               <HomePage
                 movies={movies}
-                favourites={favourites}
-                popularMovies={popularMovies}
-                addFavouriteMovie={addFavouriteMovie}
-                removeFavouriteMovie={removeFavouriteMovie}
+                favorites={favorites}
+                addFavoriteMovie={addFavoriteMovie}
+                removeFavoriteMovie={removeFavoriteMovie}
               />
             }
           />
@@ -99,7 +80,7 @@ const App = () => {
           <Route
             path="/movies/:id"
             element={
-              <MovieIntroScreen movies={movies} favourites={favourites} />
+              <MovieIntroScreen movies={movies} favorites={favorites} />
             }
           />
         </Routes>

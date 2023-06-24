@@ -13,10 +13,10 @@ const MovieList = (props) => {
             <img src={movie.Poster} alt="movie" />
             </Link>
             <div
-              onClick={() => props.handleFavouritesClick(movie)}
+              onClick={() => props.handleFavoritesClick(movie)}
               className="overlay d-flex align-items-center justify-content-center"
             >
-              <FavoriteIcon />
+              <FavoriteIcon/>
             </div>
           </div>
         ))}
