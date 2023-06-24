@@ -2,8 +2,9 @@ import React from 'react';
 import MovieList from '../components/MovieList';
 import MovieListHeader from '../components/MovieListHeader';
 import AddFavourites from '../components/AddFavourites';
+import RemoveFavourites from '../components/RemoveFavourites';
 
-const HomePage = ({ movies, favourites, popularMovies, addFavouriteMovie, removeFavouriteMovie }) => {
+const HomePage = ({ movies, favourites, addFavouriteMovie, removeFavouriteMovie }) => {
   const showSearchResultsHeader = movies.length > 0;
 
   return (
@@ -30,19 +31,7 @@ const HomePage = ({ movies, favourites, popularMovies, addFavouriteMovie, remove
         <MovieList
           movies={favourites}
           handleFavouritesClick={removeFavouriteMovie}
-          favoriteIcon={AddFavourites}
-        />
-      </div>
-
-      <div className='row d-flex align-items-center mt-3 mb-4'>
-        <MovieListHeader header='Popular Movies'/>
-      </div>
-
-      <div className='row'>
-        <MovieList
-          movies={popularMovies}
-          handleFavouritesClick={addFavouriteMovie}
-          favoriteIcon={AddFavourites}
+          favoriteIcon={RemoveFavourites}
         />
       </div>
     </>

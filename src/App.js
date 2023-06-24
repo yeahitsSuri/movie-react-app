@@ -77,7 +77,7 @@ const App = () => {
     <Router>
       <div className='container-fluid movie-app'>
         <div className='row d-flex align-items-center mt-3 mb-4'>
-          <WebHeader header='Movies'/>
+          <WebHeader header='FakeIMDB'/>
           <SearchBar searchKey={searchKey} setSearchKey={setSearchKey}/>
         </div>
 
