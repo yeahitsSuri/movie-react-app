@@ -10,6 +10,14 @@ const HomePage = ({movies, favourites, popularMovies, addFavouriteMovie, removeF
 
     return (
         <>
+            <div className='row d-flex align-items-center mt-3 mb-4'>
+                <MovieListHeader header='Popular Movies'/>
+            </div>
+
+            <div className='row'>
+                <PopularMovies/>
+            </div>
+            
             {showSearchResultsHeader && (
                 <div className='row d-flex align-items-center mt-3 mb-4'>
                     <MovieListHeader header='Searching Results: '/>
@@ -25,38 +33,20 @@ const HomePage = ({movies, favourites, popularMovies, addFavouriteMovie, removeF
             </div>
 
             <div className='row d-flex align-items-center mt-3 mb-4'>
-                <MovieListHeader header='Popular Movies'/>
+                <MovieListHeader header='Favourites'/>
             </div>
 
             <div className='row'>
                 <MovieList
-                    movies={popularMovies}
-                    handleFavouritesClick={addFavouriteMovie}
-                    favoriteIcon={AddFavourites}
+                movies={favourites}
+                handleFavouritesClick={removeFavouriteMovie}
+                favoriteIcon={RemoveFavourites}
                 />
             </div>
-
-            <div className='row d-flex align-items-center mt-3 mb-4'>
-                <MovieListHeader header='Favourites'/>
-            </div>
-
-      <div className='row'>
-        <MovieList
-          movies={favourites}
-          handleFavouritesClick={removeFavouriteMovie}
-          favoriteIcon={RemoveFavourites}
-        />
-      </div>
-        
-      <div className='row d-flex align-items-center mt-3 mb-4'>
-        <MovieListHeader header='Popular Movies'/>
-      </div>
-
-      <div className='row'>
-        <PopularMovies/>
-      </div>
-    </>
-  );
+                
+            
+        </>
+    );
 };
 
 export default HomePage;
