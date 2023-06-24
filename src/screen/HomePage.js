@@ -3,6 +3,7 @@ import MovieList from '../components/MovieList';
 import MovieListHeader from '../components/MovieListHeader';
 import AddFavourites from '../components/AddFavourites';
 import RemoveFavourites from '../components/RemoveFavourites';
+import PopularMovies from '../components/PopularMovies';
 
 const HomePage = ({ movies, favourites, addFavouriteMovie, removeFavouriteMovie }) => {
   const showSearchResultsHeader = movies.length > 0;
@@ -34,6 +35,15 @@ const HomePage = ({ movies, favourites, addFavouriteMovie, removeFavouriteMovie 
           favoriteIcon={RemoveFavourites}
         />
       </div>
+        
+      <div className='row d-flex align-items-center mt-3 mb-4'>
+        <MovieListHeader header='Popular Movies'/>
+      </div>
+
+      <div className='row'>
+        <PopularMovies/>
+      </div>
+
     </>
   );
 };

@@ -10,6 +10,7 @@ const WebHeader = (props) => {
         <Link to="/home" className="btn btn-link home-link" style={{ marginLeft: '10px'}}>Home</Link>
         <Link to="/login" className="btn btn-link home-link">Login</Link>
         <Link to="/register" className="btn btn-link home-link">Register</Link>
+        <Link to="/profile" className="btn btn-link home-link">Profile</Link>
       </h1>
     </div>
   );
