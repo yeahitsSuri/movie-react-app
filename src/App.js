@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {BrowserRouter as Router, Navigate, Route, Routes} from 'react-router-dom';
+import {BrowserRouter as Router, Navigate, Route, Routes, useNavigate} from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css"
 import './App.css';
 import HomePage from "./home-page/HomePage";
@@ -11,7 +11,7 @@ import LoginScreen from "./log-in-page";
 import {configureStore} from "@reduxjs/toolkit";
 import authReducer from "./reducers/auth-reducer";
 
-import {Provider} from "react-redux";
+import {Provider, useSelector} from "react-redux";
 import RegisterScreen from './register-page';
 
 const store = configureStore({
@@ -21,6 +21,8 @@ const store = configureStore({
                              });
 
 const App = () => {
+    const {currentUser} = useSelector((state) => state.user);
+    const navigate = useNavigate();
     const [movies, setMovies] = useState([]);
     const [searchKey, setSearchKey] = useState('');
     const [favorites, setFavorites] = useState([]);
@@ -49,14 +51,23 @@ const App = () => {
     };
 
     const addFavoriteMovie = (movie) => {
-        // Check if the movie is already in the favorites list
-        const isAlreadyFavorite = favorites.some((favorite) => favorite.imdbID === movie.imdbID);
+        if (!currentUser) {
+            alert("Please log in to add a movie to your favorites!");
+            navigate("/login");  // the login page provides registration link for user anyway
+        } else if (currentUser && currentUser.role === "admin") {
+            alert("Sorry, administrators can't add a movie to favorites. Please register for a"
+                  + " non-administrative user account!")
+            navigate("/register");
+        } else if (currentUser && currentUser.role === "user") {
+            // Check if the movie is already in the favorites list
+            const isAlreadyFavorite = favorites.some((favorite) => favorite.imdbID === movie.imdbID);
 
-        // If the movie is not already in the favorites list, add it
-        if (!isAlreadyFavorite) {
-            const newFavoriteList = [...favorites, movie];
-            setFavorites(newFavoriteList);
-            saveToLocal(newFavoriteList);
+            // If the movie is not already in the favorites list, add it
+            if (!isAlreadyFavorite) {
+                const newFavoriteList = [...favorites, movie];
+                setFavorites(newFavoriteList);
+                saveToLocal(newFavoriteList);
+            }
         }
     };
 
