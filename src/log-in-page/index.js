@@ -34,7 +34,7 @@ function LoginScreen() {
                        onChange={(event) => setPassword(event.target.value)}/>
             </div>
             <div>
-                <a href={"/tuiter/register"}>Don't have an account yet? Click here to register one</a>
+                <a href={"/register"}>Don't have an account yet? Click here to register one</a>
             </div>
             <div>
                 <button className={"btn btn-primary mt-2"} onClick={handleLogin}>Login</button>
