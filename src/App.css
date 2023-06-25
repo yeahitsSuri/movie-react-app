@@ -16,6 +16,12 @@ body {
 .image-container{
   position: relative;
   transition: transform 0.2s;
+  margin-right: 20px;
+  margin-bottom: 20px;
+}
+
+.movie {
+  flex: 0 0 auto;
 }
 
 .image-container:hover {
