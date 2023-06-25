@@ -63,7 +63,7 @@ function ProfilePage() {
             <div className="col">
                 <button className="btn btn-danger" onClick={() => {
                     dispatch(logoutThunk());
-                    navigate("/tuiter/login");
+                    navigate("/login");
                 }}>                   
                     Logout
                 </button>
