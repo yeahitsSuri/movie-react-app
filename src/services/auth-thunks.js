@@ -29,19 +29,29 @@ export const updateUserThunk = createAsyncThunk(
 
 export const registerThunk = createAsyncThunk(
     "user/register", async ({
-                                firstName,
-                                lastName,
                                 username,
                                 password,
-                                handle,
-                                image,
+                                role,
+                                firstName,
+                                showFirstName,
+                                lastName,
+                                showLastName,
+                                email,
+                                showEmail,
+                                list,
+                                showList
                             }) => {
         return await authService.register({
-                                              firstName,
-                                              lastName,
                                               username,
                                               password,
-                                              handle,
-                                              image,
+                                              role,
+                                              firstName,
+                                              showFirstName,
+                                              lastName,
+                                              showLastName,
+                                              email,
+                                              showEmail,
+                                              list,
+                                              showList
                                           });
     });
