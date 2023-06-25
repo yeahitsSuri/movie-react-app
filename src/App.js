@@ -108,25 +108,23 @@ const App = () => {
                             }
                         />
 
-                        <Route path="/login" element={<LoginScreen/>}>
+                        <Route path="/login" element={<LoginScreen/>}/>
 
-                            <Route
-                                path="/search"
-                                element={<SearchPage
-                                    movies={movies}
-                                    setMovies={setMovies}
-                                    setSearchKey={setSearchKey}
-                                    addFavoriteMovie={addFavoriteMovie}/>}
-                            />
+                        <Route
+                            path="/search"
+                            element={<SearchPage
+                                movies={movies}
+                                setMovies={setMovies}
+                                setSearchKey={setSearchKey}
+                                addFavoriteMovie={addFavoriteMovie}/>}/>
 
-                            <Route
-                                path="/details/:id"
-                                element={
-                                    <MovieIntroScreen details={movies} favorites={favorites}/>
-                                }
-                            />
-                            <Route path="/profile" element={<ProfilePage/>}/>
-                        </Route>
+                        <Route
+                            path="/details/:id"
+                            element={
+                                <MovieIntroScreen details={movies} favorites={favorites}/>
+                            }/>
+
+                        <Route path="/profile" element={<ProfilePage/>}/>
                     </Routes>
                 </div>
             </Router>
