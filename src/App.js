@@ -8,34 +8,17 @@ import WebHeader from './components/WebHeader';
 import SearchPage from './search-page/index.js';
 import ProfilePage from './profile-page';
 import LoginScreen from "./log-in-page";
-import {combineReducers, configureStore} from "@reduxjs/toolkit";
-import ReviewsReducer from "./reducers/reviews-reducer";
-import AuthReducer from "./reducers/auth-reducer";
-import storage from "redux-persist/lib/storage";
-import {persistReducer, persistStore} from "redux-persist";
-import thunk from "redux-thunk";
+import {configureStore} from "@reduxjs/toolkit";
+import authReducer from "./reducers/auth-reducer";
+
 import {Provider} from "react-redux";
 import RegisterScreen from './register-page';
 
-const rootReducer = combineReducers({
-                                        reviews: ReviewsReducer,
-                                        users: AuthReducer
-                                    });
-
-const persistConfig = {
-    key: "root",
-    storage,
-}
-
-const persistedReducer = persistReducer(persistConfig, rootReducer);
-
-export const store = configureStore({
-                                        reducer: persistedReducer,
-                                        devTools: process.env.NODE_ENV !== 'production',
-                                        middleware: [thunk]
-                                    });
-
-export const persistor = persistStore(store);
+const store = configureStore({
+                                 reducer: {
+                                     user: authReducer
+                                 }
+                             });
 
 const App = () => {
     const [movies, setMovies] = useState([]);
@@ -86,8 +69,8 @@ const App = () => {
     };
 
     return (
-        <Provider store={store}>
-            <Router>
+        <Router>
+            <Provider store={store}>
                 <div className='container-fluid movie-app'>
                     <div className='row d-flex align-items-center mt-3 mb-4'>
                         <WebHeader header='FakeIMDB'/>
@@ -108,7 +91,6 @@ const App = () => {
                         />
 
                         <Route path="/login" element={<LoginScreen/>}/>
-                        <Route path='/register' element={<RegisterScreen/>}/>
 
                         <Route
                             path="/search"
@@ -117,6 +99,8 @@ const App = () => {
                                 setMovies={setMovies}
                                 setSearchKey={setSearchKey}
                                 addFavoriteMovie={addFavoriteMovie}/>}/>
+
+                        <Route path='/register' element={<RegisterScreen/>}/>
 
                         <Route
                             path="/details/:id"
@@ -127,8 +111,8 @@ const App = () => {
                         <Route path="/profile" element={<ProfilePage/>}/>
                     </Routes>
                 </div>
-            </Router>
-        </Provider>
+            </Provider>
+        </Router>
     );
 }
 
