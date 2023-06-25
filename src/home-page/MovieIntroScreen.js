@@ -30,7 +30,7 @@ const MovieIntroScreen = () => {
         <img src={movieDetails.Poster} alt={movieDetails.Title} style={{ width: '100%' }} />
       </div>
       <div className='col-md-8'>
-        <h1>Title: {movieDetails.Title}</h1>
+        <h1>{movieDetails.Title}</h1>
         <p>
           <strong>Release Year:</strong> {movieDetails.Year}
         </p>
@@ -72,9 +72,7 @@ const MovieIntroScreen = () => {
           <div key={index}>
             <p>
               <strong>Source:</strong> {rating.Source}
-            </p>
-            <p>
-              <strong>Value:</strong> {rating.Value}
+              <strong> Rating:</strong> {rating.Value}
             </p>
           </div>
         ))}

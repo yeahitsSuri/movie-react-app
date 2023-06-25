@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { profileThunk, logoutThunk, updateUserThunk }
   from "../services/auth-thunks";
 
-function ProfilePage() {
- const { currentUser } = useSelector((state) => state.user);
+function ProfileScreen() {
+ const { currentUser } = useSelector((state) => state.auth);
  const [profile, setProfile] = useState(currentUser);
 
  const dispatch = useDispatch();
@@ -83,4 +83,4 @@ function ProfilePage() {
   </div> 
   );  
 };
-export default ProfilePage;
+export default ProfileScreen;
