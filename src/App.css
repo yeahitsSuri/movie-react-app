@@ -50,3 +50,13 @@ body {
   font-weight: bold;
   text-decoration: none;
 }
+
+.search-link {
+  margin-left: auto;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

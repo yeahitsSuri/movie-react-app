@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
-const MovieIntroScreen = ({}) => {
+const MovieIntroScreen = () => {
   const { id } = useParams();
   const [movieDetails, setMovieDetails] = useState(null);
 

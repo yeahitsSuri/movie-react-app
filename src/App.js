@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css"
 import './App.css';
 import HomePage from "./home-page/HomePage";
 import MovieIntroScreen from './home-page/MovieIntroScreen';
-import SearchBar from './components/SearchBar'
 import WebHeader from './components/WebHeader';
+import SearchPage from './search-page/index.js';
+import ProfilePage from './profile-page';
 
 const App = () => {
   const [movies, setMovies] = useState([]);
@@ -38,7 +39,7 @@ const App = () => {
   const addFavoriteMovie = (movie) => {
     // Check if the movie is already in the favorites list
     const isAlreadyFavorite = favorites.some((favorite) => favorite.imdbID === movie.imdbID);
-  
+
     // If the movie is not already in the favorites list, add it
     if (!isAlreadyFavorite) {
       const newFavoriteList = [...favorites, movie];
@@ -59,12 +60,11 @@ const App = () => {
     <Router>
       <div className='container-fluid movie-app'>
         <div className='row d-flex align-items-center mt-3 mb-4'>
-          <WebHeader header='FakeIMDB'/>
-          <SearchBar searchKey={searchKey} setSearchKey={setSearchKey}/>
+          <WebHeader header='FakeIMDB' />
         </div>
 
         <Routes>
-          <Route path="/" element={<Navigate to="/home"/>}/>
+          <Route path="/" element={<Navigate to="/home" />} />
           <Route
             path="/home"
             element={
@@ -76,13 +76,23 @@ const App = () => {
               />
             }
           />
+          <Route
+            path="/search"
+            element={<SearchPage 
+              movies={movies}
+              setMovies={setMovies} 
+              setSearchKey={setSearchKey}
+              addFavoriteMovie={addFavoriteMovie} />}
+          />
 
           <Route
-            path="/movies/:id"
+            path="/details/:id"
             element={
-              <MovieIntroScreen movies={movies} favorites={favorites} />
+              <MovieIntroScreen details={movies} favorites={favorites} />
             }
           />
+          <Route path="/profile" element={<ProfilePage/>}/>
+
         </Routes>
       </div>
     </Router>
