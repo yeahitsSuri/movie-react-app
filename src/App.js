@@ -40,9 +40,16 @@ const App = () => {
     }, [searchKey]);
 
     useEffect(() => {
-        const movieFavs = JSON.parse(localStorage.getItem('movie-react-app-favs'));
-        setFavorites(movieFavs || []); // use an empty array if movieFavs is null
+      const movieFavs = JSON.parse(localStorage.getItem('movie-react-app-favs'));
+      
+      if (movieFavs) {
+          const sortedFavorites = movieFavs.slice().reverse();
+          setFavorites(sortedFavorites);
+      } else {
+          setFavorites(movieFavs || []);
+      }
     }, []);
+  
 
     const saveToLocal = (item) => {
         localStorage.setItem('movie-react-app-favs', JSON.stringify(item));

@@ -26,7 +26,7 @@ const MovieIntroScreen = () => {
 
   return (
     <div className='row mt-3'>
-      <div className='col-md-4'>
+      <div className='col-md-4 d-none d-md-block d-lg-block d-xl-block d-xxl-block list-group'>
         <img src={movieDetails.Poster} alt={movieDetails.Title} style={{ width: '100%' }} />
       </div>
       <div className='col-md-8'>
