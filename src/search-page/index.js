@@ -3,10 +3,19 @@ import SearchBar from '../components/SearchBar';
 import MovieList from '../components/MovieList';
 import MovieListHeader from '../components/MovieListHeader';
 import AddFavorites from '../components/AddFavorites';
+import {useDispatch, useSelector} from "react-redux";
+import {useNavigate} from "react-router-dom";
+import {updateUserThunk} from "../services/auth-thunks";
 
-const SearchPage = ({addFavoriteMovie}) => {
+const SearchPage = () => {
+    const {currentUser} = useSelector((state) => state.user);
     const [movies, setMovies] = useState([]); // movies from search
     const [searchKey, setSearchKey] = useState(''); // search key the user uses
+    const [list, setList] = useState(currentUser ? currentUser.list : []);
+    // if currentUser is logged in, then retrieve their list.
+    // Otherwise, set it to empty first
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
     const showSearchResultsHeader = movies.length > 0;
 
     const getMovieFromAPI = async (searchKey) => {
@@ -24,11 +33,35 @@ const SearchPage = ({addFavoriteMovie}) => {
     }, [searchKey]);
 
     useEffect(() => {
-        setSearchKey(''); // Clear the searchKey when refresh
+        setSearchKey(searchKey);
         return () => {
-            setMovies([]); // Clear the movies state when refresh
+            setMovies(movies);
         };
     }, [setSearchKey, setMovies]);
+
+    const addToList = (movie) => {
+        if (!currentUser) {
+            alert("Please log in to add a movie to your favorites!");
+            navigate("/login");  // the login page provides registration link for user anyway
+        } else if (currentUser && currentUser.role === "admin") {
+            alert("Sorry, administrators can't add a movie to favorites. Please register for a"
+                  + " non-administrative user account!")
+            navigate("/register");
+        } else if (currentUser && currentUser.role === "user") {
+            // Check if the movie is already in the favorites list
+            const isAlreadyInList = list.some((favorite) => favorite.imdbID === movie.imdbID);
+
+            // If the movie is not already in the favorites list, add it
+            if (!isAlreadyInList) {
+                const newList = [...list, movie];
+                setList(newList);
+                const updatedCurrentUser = {
+                    ...currentUser, list: newList,
+                };
+                dispatch(updateUserThunk({userId: currentUser._id, user: updatedCurrentUser}));
+            }
+        }
+    };
 
     return (
         <div>
@@ -48,7 +81,7 @@ const SearchPage = ({addFavoriteMovie}) => {
                     <div className='row'>
                         <MovieList
                             movies={movies}
-                            handleFavoritesClick={addFavoriteMovie}
+                            handleFavoritesClick={addToList}
                             favoriteIcon={AddFavorites}
                         />
                     </div>
