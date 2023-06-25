@@ -8,9 +8,9 @@ const SearchPage = ({ setSearchKey, movies, addFavoriteMovie, setMovies }) => {
   const showSearchResultsHeader = movies.length > 0;
 
   useEffect(() => {
-    setSearchKey(''); // Clear the searchKey state when the component mounts
+    setSearchKey(''); // Clear the searchKey when refresh
     return () => {
-      setMovies([]); // Clear the movies state when the component unmounts
+      setMovies([]); // Clear the movies state when refresh
     };
   }, [setSearchKey, setMovies]);
 
