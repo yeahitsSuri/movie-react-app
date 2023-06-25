@@ -23,6 +23,7 @@ export default UsersSchema;
 
 function ProfilePage() {
     const {currentUser} = useSelector((state) => state.user);
+    console.log(currentUser);
     const [profile, setProfile] = useState(currentUser);
     const [showPassword, setShowPassword] = useState(false);
 
@@ -66,8 +67,8 @@ function ProfilePage() {
                                                 setProfile(newProfile);
                                             }}
                                             disabled/>
+                                     <span className="hint-text">Username cannot be changed.</span>
                                  </div>
-                                 <span className="hint-text">Username cannot be changed.</span>
                              </div>
 
 
@@ -90,14 +91,18 @@ function ProfilePage() {
                                              setProfile(newProfile);
                                          }}
                                      />
-                                     <label>
-                                         Show Password
+                                     <div className="form-check">
                                          <input
+                                             className="form-check-input"
                                              type="checkbox"
                                              checked={showPassword}
-                                             onChange={() => setShowPassword(!showPassword)}
+                                             onChange={(event) => setShowPassword(!showPassword)}
+                                             id="showPasswordToggle"
                                          />
-                                     </label>
+                                         <label className="form-check-label" htmlFor="showPasswordToggle">
+                                             Show password
+                                         </label>
+                                     </div>
                                  </div>
                              </div>
 
@@ -109,16 +114,16 @@ function ProfilePage() {
                                  </div>
                                  <div className="col">
                                      <div className="btn-group btn-group-toggle" data-toggle="buttons">
-                                         <label className={`btn btn-secondary ${profile.Role === 'User'
+                                         <label className={`btn btn-secondary ${profile.role === 'User'
                                                                                 ? 'active' : ''}`}>
-                                             <input type="radio" name="roles" id="user" autoComplete="off"
-                                                    checked={profile.Role === 'User'} disabled/>
+                                             <input type="radio" name="roles" id="user"
+                                                    checked={profile.role === "user"} disabled/>
                                              User
                                          </label>
-                                         <label className={`btn btn-secondary ${profile.Role === 'Admin'
+                                         <label className={`btn btn-secondary ${profile.role === 'Admin'
                                                                                 ? 'active' : ''}`}>
-                                             <input type="radio" name="roles" id="admin" autoComplete="off"
-                                                    checked={profile.Role === 'Admin'} disabled/>
+                                             <input type="radio" name="roles" id="admin"
+                                                    checked={profile.role === 'Admin'} disabled/>
                                              Admin
                                          </label>
                                      </div>
@@ -139,19 +144,16 @@ function ProfilePage() {
                                                 };
                                                 setProfile(newProfile);
                                             }}/>
-                                 </div>
-                             </div>
-
-                             {/* show first name */}
-                             <div className="row mt-3">
-                                 <div className="col">
                                      <div className="form-check">
                                          <input
                                              className="form-check-input"
                                              type="checkbox"
                                              checked={profile.showFirstName}
                                              onChange={(event) => {
-                                                 const newProfile = { ...profile, showFirstName: event.target.checked };
+                                                 const newProfile = {
+                                                     ...profile,
+                                                     showFirstName: event.target.checked
+                                                 };
                                                  setProfile(newProfile);
                                              }}
                                              id="showFirstNameToggle"
@@ -176,19 +178,16 @@ function ProfilePage() {
                                                 };
                                                 setProfile(newProfile);
                                             }}/>
-                                 </div>
-                             </div>
-
-                             {/* show last name */}
-                             <div className="row mt-3">
-                                 <div className="col">
                                      <div className="form-check">
                                          <input
                                              className="form-check-input"
                                              type="checkbox"
                                              checked={profile.showLastName}
                                              onChange={(event) => {
-                                                 const newProfile = { ...profile, showLastName: event.target.checked};
+                                                 const newProfile = {
+                                                     ...profile,
+                                                     showLastName: event.target.checked
+                                                 };
                                                  setProfile(newProfile);
                                              }}
                                              id="showLastNameToggle"
@@ -213,19 +212,16 @@ function ProfilePage() {
                                                 };
                                                 setProfile(newProfile);
                                             }}/>
-                                 </div>
-                             </div>
-
-                             {/* show email */}
-                             <div className="row mt-3">
-                                 <div className="col">
                                      <div className="form-check">
                                          <input
                                              className="form-check-input"
                                              type="checkbox"
                                              checked={profile.showEmail}
                                              onChange={(event) => {
-                                                 const newProfile = { ...profile, showEmail: event.target.checked};
+                                                 const newProfile = {
+                                                     ...profile,
+                                                     showEmail: event.target.checked
+                                                 };
                                                  setProfile(newProfile);
                                              }}
                                              id="showEmailToggle"
@@ -263,5 +259,6 @@ function ProfilePage() {
             }
         </div>
     );
-};
+}
+
 export default ProfilePage;
