@@ -86,7 +86,7 @@ function RegisterScreen() {
 
         { /* first name */ }
         <div className="mt-2 mb-2">
-          <label>Frist Name</label>
+          <label>First Name</label>
           <input
             className="form-control"
             type="text"
