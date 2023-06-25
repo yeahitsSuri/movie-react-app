@@ -10,14 +10,23 @@ function RegisterScreen() {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
+
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const handleRegister = async () => {
         try {
-            await dispatch(registerThunk(
-                { username, password, 
-                    role, firstName, lastName, email})).unwrap();
+            await dispatch(registerThunk({ 
+                username, 
+                password, 
+                role, 
+                firstName, 
+                lastName, 
+                email,
+                showFirstName: false,
+                showLastName: false,
+                showEmail: false,
+                showList: false,})).unwrap();
             navigate("/profile");
         } catch (e) {
             alert("Register failed: " + e.message);
@@ -107,6 +116,7 @@ function RegisterScreen() {
             onChange={(event) => setEmail(event.target.value)}
           />
         </div>
+
 
 
         <button className="btn btn-primary mt-2" onClick={handleRegister}>
