@@ -15,6 +15,7 @@ import storage from "redux-persist/lib/storage";
 import {persistReducer, persistStore} from "redux-persist";
 import thunk from "redux-thunk";
 import {Provider} from "react-redux";
+import RegisterScreen from './register-page';
 
 const rootReducer = combineReducers({
                                         reviews: ReviewsReducer,
@@ -107,6 +108,7 @@ const App = () => {
                         />
 
                         <Route path="/login" element={<LoginScreen/>}/>
+                        <Route path='/register' element={<RegisterScreen/>}/>
 
                         <Route
                             path="/search"
