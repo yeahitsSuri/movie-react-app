@@ -15,7 +15,6 @@ import storage from "redux-persist/lib/storage";
 import {persistReducer, persistStore} from "redux-persist";
 import thunk from "redux-thunk";
 import {Provider} from "react-redux";
-import SearchBar from "./components/SearchBar";
 
 const rootReducer = combineReducers({
                                         reviews: ReviewsReducer,
@@ -91,7 +90,6 @@ const App = () => {
                 <div className='container-fluid movie-app'>
                     <div className='row d-flex align-items-center mt-3 mb-4'>
                         <WebHeader header='FakeIMDB'/>
-                        <SearchBar searchKey={searchKey} setSearchKey={setSearchKey}/>
                     </div>
 
                     <Routes>
