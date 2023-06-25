@@ -23,6 +23,9 @@ function LoginScreen() {
     return (
         <div>
             <h1>Login</h1>
+            <div>
+                <a href={"/register"}>Don't have an account yet? Click here to register one</a>
+            </div>
             <div className={"mt-2"}>
                 <label>Username</label>
                 <input className={"form-control"} type={"text"} value={username}
@@ -32,9 +35,6 @@ function LoginScreen() {
                 <label>Password</label>
                 <input className={"form-control"} type={"password"} value={password}
                        onChange={(event) => setPassword(event.target.value)}/>
-            </div>
-            <div>
-                <a href={"/register"}>Don't have an account yet? Click here to register one</a>
             </div>
             <div>
                 <button className={"btn btn-primary mt-2"} onClick={handleLogin}>Login</button>
