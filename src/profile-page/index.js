@@ -75,10 +75,11 @@ function ProfilePage() {
                              {/* password */}
                              <div className="row mt-3">
                                  <div className="col-3">
-                                     <label>Password</label>
+                                     <label htmlFor={"password-profile"}>Password</label>
                                  </div>
                                  <div className="col">
                                      <input
+                                         id={"password-profile"}
                                          className="form-control"
                                          // showPassword is false by default
                                          type={showPassword ? 'text' : 'password'}
@@ -124,7 +125,7 @@ function ProfilePage() {
                                         checked={profile.role === 'user'}
                                         disabled
                                         />
-                                        User
+                                         User
                                     </label>
                                     <label
                                         className={`btn btn-secondary ${profile.role === 'Admin' ? 'active' : ''}`}
@@ -136,7 +137,7 @@ function ProfilePage() {
                                         checked={profile.role === 'admin'}
                                         disabled
                                         />
-                                        Admin
+                                         Admin
                                     </label>
                                     </div>
                                     <br/>
@@ -147,10 +148,10 @@ function ProfilePage() {
                              {/* first name */}
                              <div className="row mt-3">
                                  <div className="col-3">
-                                     <label>First Name</label>
+                                     <label htmlFor={"firstName-profile"}>First Name</label>
                                  </div>
                                  <div className="col">
-                                     <input className="form-control" type="text" value={profile.firstName}
+                                     <input id={"firstName-profile"} className="form-control" type="text" value={profile.firstName}
                                             onChange={(event) => {
                                                 const newProfile = {
                                                     ...profile, firstName: event.target.value,
@@ -181,10 +182,11 @@ function ProfilePage() {
                              {/* last name */}
                              <div className="row mt-3">
                                  <div className="col-3">
-                                     <label>Last Name</label>
+                                     <label htmlFor={"lastName-profile"}>Last Name</label>
                                  </div>
                                  <div className="col">
-                                     <input className="form-control" type="text" value={profile.lastName}
+                                     <input id={"lastName-profile"}
+                                         className="form-control" type="text" value={profile.lastName}
                                             onChange={(event) => {
                                                 const newProfile = {
                                                     ...profile, lastName: event.target.value,
@@ -215,10 +217,11 @@ function ProfilePage() {
                              {/* email */}
                              <div className="row mt-3">
                                  <div className="col-3">
-                                     <label>Email</label>
+                                     <label htmlFor={"email-profile"}>Email</label>
                                  </div>
                                  <div className="col">
-                                     <input className="form-control" type="text" value={profile.email}
+                                     <input id={"email-profile"}
+                                         className="form-control" type="text" value={profile.email}
                                             onChange={(event) => {
                                                 const newProfile = {
                                                     ...profile, email: event.target.value,

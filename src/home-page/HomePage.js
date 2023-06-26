@@ -1,13 +1,12 @@
-import React, {useState} from 'react';
+import React from 'react';
 import MovieList from '../components/MovieList';
-import MovieListHeader from '../components/MovieListHeader';
 import RemoveFavorites from '../components/RemoveFavorites';
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {updateUserThunk} from "../services/auth-thunks";
-import {useDispatch} from "react-redux";
 import {addToList} from "../search-page";
 import {useNavigate} from "react-router-dom";
 import AddFavorites from "../components/AddFavorites";
+import MovieListHeader from "../components/MovieListHeader";
 
 export const removeFavoriteMovie = (movie, currentUser, dispatch) => {
     // first fetch the list of users that favor this movie
@@ -31,7 +30,7 @@ export const removeFavoriteMovie = (movie, currentUser, dispatch) => {
         ...currentUser,
         list: newList,
     };
-    dispatch(updateUserThunk({ userId: currentUser._id, user: updatedCurrentUser }));
+    dispatch(updateUserThunk({userId: currentUser._id, user: updatedCurrentUser}));
 };
 
 const HomePage = () => {
@@ -39,7 +38,7 @@ const HomePage = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const adminFavorites = localStorage.getItem("admin-favorites");
-    const adminFavoritesList = JSON.parse(adminFavorites);
+    const adminFavoritesList = (adminFavorites ? JSON.parse(adminFavorites) : []);
 
     const handleRemoveFavoritesClick = (movie) => {
         removeFavoriteMovie(movie, currentUser, dispatch);
@@ -48,10 +47,9 @@ const HomePage = () => {
     const handleAddFavoritesClick = (movie) => {
         addToList(movie, currentUser, dispatch, navigate);
     }
-   
+
     return (
         <>
-            {/* Display admin favorites */}
             <div className='row d-flex align-items-center mt-3 mb-4'>
                 <MovieListHeader header='Admin Recommends for You'/>
             </div>
@@ -59,23 +57,29 @@ const HomePage = () => {
             <div className='row'>
                 <MovieList
                     movies={adminFavoritesList}
-                    handleFavoritesClick={handleAddFavoritesClick}
-                    favoriteIcon={AddFavorites}
+                    handleRemoveFavoritesClick={handleRemoveFavoritesClick}
+                    handleAddFavoritesClick={handleAddFavoritesClick}
+                    addFavoriteIcon={AddFavorites}
+                    removeFavoriteIcon={RemoveFavorites}
                 />
             </div>
 
-            {/* Display User's Favorites */}
+            <hr/>
+
             <div className='row d-flex align-items-center mt-3 mb-4'>
                 <MovieListHeader header='My Favorites'/>
             </div>
 
             <div className='row'>
                 <MovieList
-                movies={currentUser ? currentUser.list : []}
-                handleFavoritesClick={handleRemoveFavoritesClick}
-                favoriteIcon={RemoveFavorites}
+                    movies={currentUser ? currentUser.list : []}
+                    handleRemoveFavoritesClick={handleRemoveFavoritesClick}
+                    handleAddFavoritesClick={handleAddFavoritesClick}
+                    addFavoriteIcon={AddFavorites}
+                    removeFavoriteIcon={RemoveFavorites}
                 />
             </div>
+
         </>
     );
 };

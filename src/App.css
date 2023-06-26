@@ -3,6 +3,17 @@ body {
   color: #ffffff
 }
 
+/*.movie-list-card {*/
+/*  background: grey;*/
+/*  opacity: 0.7;*/
+/*  border-radius: 10px;*/
+/*}*/
+
+h1, h2, h3 {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: bold;
+}
+
 .movie-app > .row {
   flex-wrap: nowrap; 
   overflow-x: auto;
@@ -45,16 +56,26 @@ body {
   text-align: center;
 }
 
-.home-link {
+.btn-secondary {
+  background-color: white;
+  color: black;
+}
+
+.btn-link {
+  background-color: rgba(100, 149, 237, 0.7);
+  margin-left: 0.5rem;
   color: white;
   text-decoration: none;
 }
 
 .btn-link:hover {
+  background-color: cornflowerblue;  /* Add the desired background color for hover */
   color: white;
-  font-size: 0.6em;
-  font-weight: bold;
-  text-decoration: none;
+  text-decoration: none;  /* Remove the underline on hover */
+}
+
+.welcome-message {
+  margin-left: 10px;
 }
 
 .search-link {

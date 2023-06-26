@@ -6,6 +6,8 @@ import AddFavorites from '../components/AddFavorites';
 import {useDispatch, useSelector} from 'react-redux';
 import {useNavigate, useLocation} from 'react-router-dom';
 import {updateUserThunk} from '../services/auth-thunks';
+import {removeFavoriteMovie} from "../home-page/HomePage";
+import RemoveFavorites from "../components/RemoveFavorites";
 
 export const addToList = (movie, currentUser, dispatch, navigate) => {
     if (!currentUser) {
@@ -62,6 +64,10 @@ const SearchPage = () => {
         return favoritesList.some((favorite) => favorite.imdbID === movie.imdbID)
     };
 
+    const handleRemoveFavoritesClick = (movie) => {
+        removeFavoriteMovie(movie, currentUser, dispatch);
+    }
+
     useEffect(() => {
         const lastSearch = localStorage.getItem('last-search');
         if (lastSearch !== "") {
@@ -112,8 +118,10 @@ const SearchPage = () => {
                     <div className='row'>
                         <MovieList
                             movies={movies}
-                            handleFavoritesClick={handleAddFavoritesClick}
-                            favoriteIcon={AddFavorites}
+                            handleRemoveFavoritesClick={handleRemoveFavoritesClick}
+                            handleAddFavoritesClick={handleAddFavoritesClick}
+                            addFavoriteIcon={AddFavorites}
+                            removeFavoriteIcon={RemoveFavorites}
                         />
                     </div>
                 </div>

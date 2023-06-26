@@ -44,8 +44,9 @@ function RegisterScreen() {
 
             { /* username */}
             <div className="mt-2 mb-2">
-                <label>Username</label>
+                <label htmlFor={"username-register"}>Username</label>
                 <input
+                    id={"username-register"}
                     className="form-control"
                     type="text"
                     value={username}
@@ -55,8 +56,9 @@ function RegisterScreen() {
 
             { /* password */}
             <div className="mt-2 mb-2">
-                <label>Password</label>
+                <label htmlFor={"password-register"}>Password</label>
                 <input
+                    id={"password-register"}
                     className="form-control"
                     type="password"
                     value={password}
@@ -66,10 +68,11 @@ function RegisterScreen() {
 
             { /* choose user type */}
             <div className="mt-2">
-                <label>Choose User Type: </label>
+                <label htmlFor={"role-register"}>Choose User Type: </label>
                 <div style={{marginTop: '0.5rem'}}>
                     <label style={{marginRight: '1rem'}}>
                         <input
+                            id={"role-register"}
                             type="radio"
                             value="user"
                             checked={role === 'user'}
@@ -79,6 +82,7 @@ function RegisterScreen() {
                     </label>
                     <label>
                         <input
+                            id={"role-register"}
                             type="radio"
                             value="admin"
                             checked={role === 'admin'}
@@ -91,8 +95,9 @@ function RegisterScreen() {
 
             { /* first name */}
             <div className="mt-2 mb-2">
-                <label>First Name</label>
+                <label htmlFor={"firstName-register"}>First Name</label>
                 <input
+                    id={"firstName-register"}
                     className="form-control"
                     type="text"
                     value={firstName}
@@ -102,8 +107,9 @@ function RegisterScreen() {
 
             { /* last name */}
             <div className="mt-2 mb-2">
-                <label>Last Name</label>
+                <label htmlFor={"lastName-register"}>Last Name</label>
                 <input
+                    id={"lastName-register"}
                     className="form-control"
                     type="text"
                     value={lastName}
@@ -113,8 +119,9 @@ function RegisterScreen() {
 
             { /* email */}
             <div className="mt-2 mb-2">
-                <label>Email</label>
+                <label htmlFor={"email-register"}>Email</label>
                 <input
+                    id={"email-register"}
                     className="form-control"
                     type="text"
                     value={email}
