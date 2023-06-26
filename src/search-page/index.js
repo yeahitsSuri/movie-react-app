@@ -53,6 +53,11 @@ const SearchPage = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const showSearchResultsHeader = movies.length > 0;
+    const favoritesList = currentUser ? currentUser.list : [];
+    
+    const isMovieInFavorites = (movie) => {
+        return favoritesList.some((favorite) => favorite.imdbID === movie.imdbID)
+    };
 
     const getMovieFromAPI = async (searchKey) => {
         const url = `http://www.omdbapi.com/?s=${searchKey}&apikey=a52e368a`;
@@ -90,8 +95,12 @@ const SearchPage = () => {
     }, [searchKey]);
 
     const handleAddFavoritesClick = (movie) => {
-        addToList(movie, currentUser, dispatch, navigate);
-    }
+        if (isMovieInFavorites(movie)) {
+          alert("You already have this movie in your favorites!");
+        } else {
+          addToList(movie, currentUser, dispatch, navigate);
+        }
+    };
 
     return (
         <div>
