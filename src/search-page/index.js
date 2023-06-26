@@ -43,13 +43,13 @@ const SearchPage = () => {
         if (!currentUser) {
             alert("Please log in to add a movie to your favorites!");
             navigate("/login");  // the login page provides registration link for user anyway
-        } else if (currentUser && currentUser.role === "admin") {
-            alert("Sorry, administrators can't add a movie to favorites. Please register for a"
-                  + " non-administrative user account!")
-            navigate("/register");
-        } else if (currentUser && currentUser.role === "user") {
+        } else if (currentUser) {
             // Check if the movie is already in the favorites list
             const isAlreadyInList = list.some((favorite) => favorite.imdbID === movie.imdbID);
+
+            if (isAlreadyInList) {
+                alert("You already have this movie in your list!");
+            }
 
             // If the movie is not already in the favorites list, add it
             if (!isAlreadyInList) {

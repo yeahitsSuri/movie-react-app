@@ -123,7 +123,7 @@ function ProfilePage() {
                                          <label className={`btn btn-secondary ${profile.role === 'Admin'
                                                                                 ? 'active' : ''}`}>
                                              <input type="radio" name="roles" id="admin"
-                                                    checked={profile.role === 'Admin'} disabled/>
+                                                    checked={profile.role === 'admin'} disabled/>
                                              Admin
                                          </label>
                                      </div>
