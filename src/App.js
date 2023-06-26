@@ -3,7 +3,7 @@ import {BrowserRouter as Router, Navigate, Route, Routes} from 'react-router-dom
 import "bootstrap/dist/css/bootstrap.min.css"
 import './App.css';
 import HomePage from "./home-page/HomePage";
-import MovieIntroScreen from './home-page/MovieIntroScreen';
+import MovieIntroScreen from "./details-page/MovieIntroScreen"
 import WebHeader from './components/WebHeader';
 import SearchPage from './search-page/index.js';
 import ProfilePage from './profile-page';
@@ -21,9 +21,6 @@ const store = configureStore({
                              });
 
 const App = () => {
-    const [movies, setMovies] = useState([]);
-    const [favorites, setFavorites] = useState([]);
-
     return (
         <Router>
             <Provider store={store}>
@@ -52,7 +49,7 @@ const App = () => {
                         <Route
                             path="/details/:id"
                             element={
-                                <MovieIntroScreen details={movies} favorites={favorites}/>
+                                <MovieIntroScreen/>
                             }/>
 
                         <Route path="/profile" element={<ProfilePage/>}/>
