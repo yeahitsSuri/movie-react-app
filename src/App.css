@@ -70,3 +70,7 @@ body {
 .italic {
   font-style: italic;
 }
+
+.extra-small {
+  font-size: 20px;
+}

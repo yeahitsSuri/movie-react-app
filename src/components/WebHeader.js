@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import '../App.css'
 
 const WebHeader = (props) => {
   const { currentUser } = useSelector((state) => state.user);
@@ -13,7 +14,9 @@ const WebHeader = (props) => {
           {currentUser ? (
               <>
                 <Link to="/profile" className="btn btn-link home-link">Profile</Link>
+                <span className="welcome-message extra-small italic">Welcome, {currentUser.username}!</span>
                 <Link to="/search" className="btn btn-link home-link search-link">Search</Link>
+                
               </>
           ) : (
                <>

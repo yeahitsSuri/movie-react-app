@@ -15,7 +15,7 @@ function LoginScreen() {
                 alert(response.payload.message);
             } else {
                 localStorage.setItem("last-search", "");
-                navigate("/profile");
+                navigate("/home");
             }
         } catch (e) {
             alert(e);
