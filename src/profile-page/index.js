@@ -2,6 +2,11 @@ import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {logoutThunk, profileThunk, updateUserThunk} from "../services/auth-thunks";
+import MovieList from "../components/MovieList";
+import AddFavorites from "../components/AddFavorites";
+import RemoveFavorites from "../components/RemoveFavorites";
+import {removeFavoriteMovie} from "../home-page/HomePage";
+import {addToList} from "../search-page";
 
 /*
 import mongoose from "mongoose";
@@ -29,6 +34,14 @@ function ProfilePage() {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    const handleRemoveFavoritesClick = (movie) => {
+        removeFavoriteMovie(movie, currentUser, dispatch);
+    }
+
+    const handleAddFavoritesClick = (movie) => {
+        addToList(movie, currentUser, dispatch, navigate);
+    }
 
     const save = async () => {
         await dispatch(updateUserThunk({userId: currentUser._id, user: profile}));
@@ -247,6 +260,15 @@ function ProfilePage() {
                                          </label>
                                      </div>
                                  </div>
+                             </div>
+
+                             <div className="row mt-3">
+                                 <h3>Your Favorites</h3>
+                                 <MovieList movies={currentUser.list}
+                                            handleAddFavoritesClick={handleAddFavoritesClick}
+                                            handleRemoveFavoriteClick={handleRemoveFavoritesClick}
+                                            addFavoriteIcon={AddFavorites}
+                                            removeFavoriteIcon={RemoveFavorites}/>
                              </div>
 
                              {/* Log out button */}

@@ -4,50 +4,49 @@ import MovieList from '../components/MovieList';
 import MovieListHeader from '../components/MovieListHeader';
 import AddFavorites from '../components/AddFavorites';
 import {useDispatch, useSelector} from 'react-redux';
-import {useNavigate, useLocation} from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 import {updateUserThunk} from '../services/auth-thunks';
 import {removeFavoriteMovie} from "../home-page/HomePage";
 import RemoveFavorites from "../components/RemoveFavorites";
 
 export const addToList = (movie, currentUser, dispatch, navigate) => {
     if (!currentUser) {
-      alert("Please log in to add a movie to your favorites!");
-      navigate("/login");
+        alert("Please log in to add a movie to your favorites!");
+        navigate("/login");
     } else if (currentUser) {
-      const movieFavoredByUsers = localStorage.getItem(movie.imdbID);
-      const movieFavoredByUsersList = JSON.parse(movieFavoredByUsers);
-      if (movieFavoredByUsers) {
-        const newMovieFavoredByUsers = [currentUser, ...movieFavoredByUsersList];
-        localStorage.setItem(movie.imdbID, JSON.stringify(newMovieFavoredByUsers));
-      } else {
-        const newMovieFavoredByUsers = [currentUser];
-        localStorage.setItem(movie.imdbID, JSON.stringify(newMovieFavoredByUsers));
-      }
-  
-      const isAlreadyInList = currentUser.list.some(
-        (favorite) => favorite.imdbID === movie.imdbID
-      );
-  
-      if (isAlreadyInList) {
-        alert("You already have this movie in your list!");
-      }
-  
-      if (!isAlreadyInList) {
-        const newList = [movie, ...currentUser.list];
-  
-        if (currentUser.role === "admin") {
-          localStorage.setItem("admin-favorites", JSON.stringify(newList));
+        const movieFavoredByUsers = localStorage.getItem(movie.imdbID);
+        const movieFavoredByUsersList = JSON.parse(movieFavoredByUsers);
+        if (movieFavoredByUsers) {
+            const newMovieFavoredByUsers = [currentUser, ...movieFavoredByUsersList];
+            localStorage.setItem(movie.imdbID, JSON.stringify(newMovieFavoredByUsers));
+        } else {
+            const newMovieFavoredByUsers = [currentUser];
+            localStorage.setItem(movie.imdbID, JSON.stringify(newMovieFavoredByUsers));
         }
-  
-        const updatedCurrentUser = {
-          ...currentUser,
-          list: newList,
-        };
-        dispatch(updateUserThunk({ userId: currentUser._id, user: updatedCurrentUser }));
-      }
+
+        const isAlreadyInList = currentUser.list.some(
+            (favorite) => favorite.imdbID === movie.imdbID
+        );
+
+        if (isAlreadyInList) {
+            alert("You already have this movie in your list!");
+        }
+
+        if (!isAlreadyInList) {
+            const newList = [movie, ...currentUser.list];
+
+            if (currentUser.role === "admin") {
+                localStorage.setItem("admin-favorites", JSON.stringify(newList));
+            }
+
+            const updatedCurrentUser = {
+                ...currentUser,
+                list: newList,
+            };
+            dispatch(updateUserThunk({userId: currentUser._id, user: updatedCurrentUser}));
+        }
     }
-  };
-  
+};
 
 const SearchPage = () => {
     const location = useLocation();
@@ -59,14 +58,11 @@ const SearchPage = () => {
     const dispatch = useDispatch();
     const showSearchResultsHeader = movies.length > 0;
     const favoritesList = currentUser ? currentUser.list : [];
-    
+
     const isMovieInFavorites = (movie) => {
         return favoritesList.some((favorite) => favorite.imdbID === movie.imdbID)
     };
 
-    const handleRemoveFavoritesClick = (movie) => {
-        removeFavoriteMovie(movie, currentUser, dispatch);
-    }
 
     useEffect(() => {
         const lastSearch = localStorage.getItem('last-search');
@@ -93,13 +89,13 @@ const SearchPage = () => {
         getMovieFromAPI(search);
     }, [search]);
 
+    const handleRemoveFavoritesClick = (movie) => {
+        removeFavoriteMovie(movie, currentUser, dispatch);
+    }
+
     const handleAddFavoritesClick = (movie) => {
-        if (isMovieInFavorites(movie)) {
-          alert("You already have this movie in your favorites!");
-        } else {
-          addToList(movie, currentUser, dispatch, navigate);
-        }
-    };
+        addToList(movie, currentUser, dispatch, navigate);
+    }
 
     return (
         <div>
