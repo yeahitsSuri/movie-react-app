@@ -35,7 +35,7 @@ const DetailsUserList = ({ users }) => {
               </span>
             </div>
             <Link
-              to={currentUser._id === user._id ? `/profile` : `/profile/${user._id}`}
+              to={currentUser && currentUser._id === user._id ? `/profile` : `/profile/${user._id}`}
               className="btn btn-primary btn-sm"
             >
               Profile

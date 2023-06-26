@@ -43,7 +43,7 @@ const MovieIntroScreen = () => {
         <img src={movieDetails.Poster} alt={movieDetails.Title} style={{ width: '100%' }} />
         <button onClick={handleAddToFavorites} className="btn btn-primary btn-lg mt-2" 
           style={{ width: '100%' , color: 'white'}}>
-          {currentUser.role === "admin" ? "Add to Recommends" : "Add to Favorites"}
+          {currentUser && currentUser.role === "admin" ? "Add to Recommends" : "Add to Favorites"}
         </button>
       </div>
       <div className='col-md-6'>
