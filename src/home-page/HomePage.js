@@ -14,14 +14,21 @@ const HomePage = () => {
     const adminFavoritesList = JSON.parse(adminFavorites);
 
     const removeFavoriteMovie = (movie) => {
-        // filter out the gievn movie
+        // first fetch the list of users that favor this movie
+        const movieFavoredByUsers = localStorage.getItem(movie.imdbID);
+        const movieFavoredByUsersList = JSON.parse(movieFavoredByUsers);
+        // then remove the currentUser from the list
+        const newMovieFavoredByUsersList = movieFavoredByUsersList.filter((user) => user._id !== currentUser._id);
+        localStorage.setItem(movie.imdbID, JSON.stringify(newMovieFavoredByUsersList));
+
+        // filter out the given movie
         const newList = list.filter(
             (item) => item.imdbID !== movie.imdbID
         );
         if (currentUser.role === "admin") {
             localStorage.setItem("admin-favorites", JSON.stringify(newList));
         }
-        // for both users, update themselves 
+        // for both users, update themselves
         setList(newList);
         const updatedCurrentUser = {
             ...currentUser, list: newList,

@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import {useDispatch} from "react-redux";
+import DetailsUserList from "../components/DetailsUserList";
 
 const MovieIntroScreen = () => {
   const { id } = useParams();
   const [movieDetails, setMovieDetails] = useState(null);
+  const dispatch = useDispatch();
+  const thisMovieFavoredBy = localStorage.getItem(id);
+  const thisMovieFavoredByList = thisMovieFavoredBy ? JSON.parse(thisMovieFavoredBy) : [];
 
   useEffect(() => {
     const fetchMovieDetails = async () => {
@@ -29,7 +34,7 @@ const MovieIntroScreen = () => {
       <div className='col-md-4 d-none d-md-block d-lg-block d-xl-block d-xxl-block list-group'>
         <img src={movieDetails.Poster} alt={movieDetails.Title} style={{ width: '100%' }} />
       </div>
-      <div className='col-md-8'>
+      <div className='col-md-6'>
         <h1>{movieDetails.Title}</h1>
         <p>
           <strong>Release Year:</strong> {movieDetails.Year}
@@ -89,6 +94,12 @@ const MovieIntroScreen = () => {
           <strong>Total Seasons:</strong> {movieDetails.totalSeasons}
         </p>
       </div>
+
+      <div className="col-md-2">
+        <h3>Users who added this movie to their favorites</h3>
+        <DetailsUserList users={thisMovieFavoredByList}/>
+      </div>
+
     </div>
   );
 };

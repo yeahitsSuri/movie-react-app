@@ -56,6 +56,16 @@ const SearchPage = () => {
             alert("Please log in to add a movie to your favorites!");
             navigate("/login");  // the login page provides registration link for user anyway
         } else if (currentUser) {
+            const movieFavoredByUsers = localStorage.getItem(movie.imdbID);
+            const movieFavoredByUsersList = JSON.parse(movieFavoredByUsers);
+            if (movieFavoredByUsers) {
+                const newMovieFavoredByUsers = [currentUser, ...movieFavoredByUsersList];
+                localStorage.setItem(movie.imdbID, JSON.stringify(newMovieFavoredByUsers));
+            } else { // if list is null, create a new array
+                const newMovieFavoredByUsers = [currentUser];
+                localStorage.setItem(movie.imdbID, JSON.stringify(newMovieFavoredByUsers));
+            }
+
             // Check if the movie is already in the favorites list
             const isAlreadyInList = list.some((favorite) => favorite.imdbID === movie.imdbID);
 
