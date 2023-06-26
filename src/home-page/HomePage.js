@@ -6,6 +6,31 @@ import {useSelector} from "react-redux";
 import {updateUserThunk} from "../services/auth-thunks";
 import {useDispatch} from "react-redux";
 
+export const removeFavoriteMovie = (movie, currentUser, dispatch) => {
+    // first fetch the list of users that favor this movie
+    const movieFavoredByUsers = localStorage.getItem(movie.imdbID);
+    const movieFavoredByUsersList = JSON.parse(movieFavoredByUsers);
+    // then remove the currentUser from the list
+    const newMovieFavoredByUsersList = movieFavoredByUsersList.filter(
+        (user) => user._id !== currentUser._id
+    );
+    localStorage.setItem(movie.imdbID, JSON.stringify(newMovieFavoredByUsersList));
+
+    // filter out the given movie
+    const newList = currentUser.list.filter(
+        (item) => item.imdbID !== movie.imdbID
+    );
+    if (currentUser.role === "admin") {
+        localStorage.setItem("admin-favorites", JSON.stringify(newList));
+    }
+    // for both users, update themselves
+    const updatedCurrentUser = {
+        ...currentUser,
+        list: newList,
+    };
+    dispatch(updateUserThunk({ userId: currentUser._id, user: updatedCurrentUser }));
+};
+
 const HomePage = () => {
     const {currentUser} = useSelector((state) => state.user);
     const [list, setList] = useState(currentUser ? currentUser.list : []);
@@ -13,28 +38,9 @@ const HomePage = () => {
     const adminFavorites = localStorage.getItem("admin-favorites");
     const adminFavoritesList = JSON.parse(adminFavorites);
 
-    const removeFavoriteMovie = (movie) => {
-        // first fetch the list of users that favor this movie
-        const movieFavoredByUsers = localStorage.getItem(movie.imdbID);
-        const movieFavoredByUsersList = JSON.parse(movieFavoredByUsers);
-        // then remove the currentUser from the list
-        const newMovieFavoredByUsersList = movieFavoredByUsersList.filter((user) => user._id !== currentUser._id);
-        localStorage.setItem(movie.imdbID, JSON.stringify(newMovieFavoredByUsersList));
-
-        // filter out the given movie
-        const newList = list.filter(
-            (item) => item.imdbID !== movie.imdbID
-        );
-        if (currentUser.role === "admin") {
-            localStorage.setItem("admin-favorites", JSON.stringify(newList));
-        }
-        // for both users, update themselves
-        setList(newList);
-        const updatedCurrentUser = {
-            ...currentUser, list: newList,
-        };
-        dispatch(updateUserThunk({userId: currentUser._id, user: updatedCurrentUser}));
-    };
+    const handleFavoritesClick = (movie) => {
+        removeFavoriteMovie(movie, currentUser, dispatch);
+    }
    
     return (
         <>
@@ -58,8 +64,8 @@ const HomePage = () => {
 
             <div className='row'>
                 <MovieList
-                movies={list}
-                handleFavoritesClick={removeFavoriteMovie}
+                movies={currentUser ? currentUser.list : []}
+                handleFavoritesClick={handleFavoritesClick}
                 favoriteIcon={RemoveFavorites}
                 />
             </div>

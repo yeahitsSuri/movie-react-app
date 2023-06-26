@@ -10,6 +10,7 @@ import ProfilePage from './profile-page';
 import LoginScreen from "./log-in-page";
 import {configureStore} from "@reduxjs/toolkit";
 import authReducer from "./reducers/auth-reducer";
+import OtherProfile from "./profile-page/other-profile";
 
 import {Provider} from "react-redux";
 import RegisterScreen from './register-page';
@@ -56,6 +57,8 @@ const App = () => {
                             }/>
 
                         <Route path="/profile" element={<ProfilePage/>}/>
+
+                        {/*<Route path="/profile/:id" element={<OtherProfile/>}/>*/}
                     </Routes>
                 </div>
             </Provider>
