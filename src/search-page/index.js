@@ -3,17 +3,15 @@ import SearchBar from '../components/SearchBar';
 import MovieList from '../components/MovieList';
 import MovieListHeader from '../components/MovieListHeader';
 import AddFavorites from '../components/AddFavorites';
-import {useDispatch, useSelector} from "react-redux";
-import {useNavigate} from "react-router-dom";
-import {updateUserThunk} from "../services/auth-thunks";
+import {useDispatch, useSelector} from 'react-redux';
+import {useNavigate} from 'react-router-dom';
+import {updateUserThunk} from '../services/auth-thunks';
 
 const SearchPage = () => {
     const {currentUser} = useSelector((state) => state.user);
-    const [movies, setMovies] = useState([]); // movies from search
-    const [searchKey, setSearchKey] = useState(''); // search key the user uses
+    const [movies, setMovies] = useState([]);
+    const [searchKey, setSearchKey] = useState('');
     const [list, setList] = useState(currentUser ? currentUser.list : []);
-    // if currentUser is logged in, then retrieve their list.
-    // Otherwise, set it to empty first
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const showSearchResultsHeader = movies.length > 0;
@@ -29,15 +27,29 @@ const SearchPage = () => {
     };
 
     useEffect(() => {
-        getMovieFromAPI(searchKey);
+        const storedSearchKey = localStorage.getItem('search-key');
+        const storedMovies = JSON.parse(localStorage.getItem('search-results'));
+
+        if (storedSearchKey) {
+            setSearchKey(storedSearchKey);
+        }
+
+        if (storedMovies) {
+            setMovies(storedMovies);
+        }
+    }, []);
+
+    useEffect(() => {
+        localStorage.setItem('search-key', searchKey);
     }, [searchKey]);
 
     useEffect(() => {
-        setSearchKey(searchKey);
-        return () => {
-            setMovies(movies);
-        };
-    }, [setSearchKey, setMovies]);
+        localStorage.setItem('search-results', JSON.stringify(movies));
+    }, [movies]);
+
+    useEffect(() => {
+        getMovieFromAPI(searchKey);
+    }, [searchKey]);
 
     const addToList = (movie) => {
         if (!currentUser) {
@@ -66,13 +78,12 @@ const SearchPage = () => {
     return (
         <div>
             <div className='row d-flex align-items-center mt-3 mb-2'>
-                <MovieListHeader header='Search Here: '/>
+                <MovieListHeader header={'Search for "' + searchKey + '": '}/>
             </div>
             <div className='row d-flex align-items-center mt-1 mb-4'>
-                <SearchBar searchKey='' setSearchKey={setSearchKey}/>
+                <SearchBar searchKey={searchKey} setSearchKey={setSearchKey}/>
             </div>
 
-            {/* Display Searching Results */}
             {showSearchResultsHeader && (
                 <div>
                     <div className='row d-flex align-items-center mt-3 mb-4'>
