@@ -53,7 +53,7 @@ const HomePage = () => {
         <>
             {/* Display admin favorites */}
             <div className='row d-flex align-items-center mt-3 mb-4'>
-                <MovieListHeader header='Admin Favorites for You'/>
+                <MovieListHeader header='Admin Recommends for You'/>
             </div>
 
             <div className='row'>
