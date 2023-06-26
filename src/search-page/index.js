@@ -66,6 +66,11 @@ const SearchPage = () => {
             // If the movie is not already in the favorites list, add it
             if (!isAlreadyInList) {
                 const newList = [...list, movie];
+
+                if (currentUser.role === "admin") {
+                    localStorage.setItem("admin-favorites", JSON.stringify(newList));
+                }
+
                 setList(newList);
                 const updatedCurrentUser = {
                     ...currentUser, list: newList,

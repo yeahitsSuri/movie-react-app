@@ -21,6 +21,9 @@ const store = configureStore({
                              });
 
 const App = () => {
+    const adminFavorites = [];
+    localStorage.setItem("admin-favorites", JSON.stringify(adminFavorites));
+
     return (
         <Router>
             <Provider store={store}>
