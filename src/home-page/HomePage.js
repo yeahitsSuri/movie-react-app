@@ -1,9 +1,26 @@
-import React from 'react';
+import React, {useState} from 'react';
 import MovieList from '../components/MovieList';
 import MovieListHeader from '../components/MovieListHeader';
 import RemoveFavorites from '../components/RemoveFavorites';
+import {useSelector} from "react-redux";
+import {updateUserThunk} from "../services/auth-thunks";
+import {useDispatch} from "react-redux";
 
-const HomePage = ({ favorites, removeFavoriteMovie}) => {
+const HomePage = () => {
+    const {currentUser} = useSelector((state) => state.user);
+    const [list, setList] = useState(currentUser ? currentUser.list : []);
+    const dispatch = useDispatch();
+
+    const removeFavoriteMovie = (movie) => {
+        const newList = list.filter(
+            (item) => item.imdbID !== movie.imdbID
+        );
+        setList(newList);
+        const updatedCurrentUser = {
+            ...currentUser, list: newList,
+        };
+        dispatch(updateUserThunk({userId: currentUser._id, user: updatedCurrentUser}));
+    };
    
     return (
         <>       
@@ -14,7 +31,7 @@ const HomePage = ({ favorites, removeFavoriteMovie}) => {
 
             <div className='row'>
                 <MovieList
-                movies={favorites}
+                movies={list}
                 handleFavoritesClick={removeFavoriteMovie}
                 favoriteIcon={RemoveFavorites}
                 />

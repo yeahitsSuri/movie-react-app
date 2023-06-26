@@ -22,58 +22,7 @@ const store = configureStore({
 
 const App = () => {
     const [movies, setMovies] = useState([]);
-    const [searchKey, setSearchKey] = useState('');
     const [favorites, setFavorites] = useState([]);
-
-    const getMovieFromAPI = async (searchKey) => {
-        const url = `http://www.omdbapi.com/?s=${searchKey}&apikey=a52e368a`;
-        const response = await fetch(url);
-        const responseJson = await response.json();
-
-        if (responseJson.Search) {
-            setMovies(responseJson.Search);
-        }
-    };
-
-    useEffect(() => {
-        getMovieFromAPI(searchKey);
-    }, [searchKey]);
-
-    useEffect(() => {
-        const movieFavs = JSON.parse(localStorage.getItem('movie-react-app-favs'));
-
-        if (movieFavs) {
-            const sortedFavorites = movieFavs.slice().reverse();
-            setFavorites(sortedFavorites);
-        } else {
-            setFavorites(movieFavs || []);
-        }
-    }, []);
-  
-
-    const saveToLocal = (item) => {
-        localStorage.setItem('movie-react-app-favs', JSON.stringify(item));
-    };
-
-    const addFavoriteMovie = (movie) => {
-        // Check if the movie is already in the favorites list
-        const isAlreadyFavorite = favorites.some((favorite) => favorite.imdbID === movie.imdbID);
-
-        // If the movie is not already in the favorites list, add it
-        if (!isAlreadyFavorite) {
-            const newFavoriteList = [...favorites, movie];
-            setFavorites(newFavoriteList);
-            saveToLocal(newFavoriteList);
-        }
-    };
-
-    const removeFavoriteMovie = (movie) => {
-        const newFavoriteList = favorites.filter(
-            (favorite) => favorite.imdbID !== movie.imdbID
-        );
-        setFavorites(newFavoriteList);
-        saveToLocal(newFavoriteList);
-    };
 
     return (
         <Router>
@@ -88,12 +37,7 @@ const App = () => {
                         <Route
                             path="/home"
                             element={
-                                <HomePage
-                                    movies={movies}
-                                    favorites={favorites}
-                                    addFavoriteMovie={addFavoriteMovie}
-                                    removeFavoriteMovie={removeFavoriteMovie}
-                                />
+                                <HomePage/>
                             }
                         />
 
@@ -101,8 +45,7 @@ const App = () => {
 
                         <Route
                             path="/search"
-                            element={<SearchPage
-                                addFavoriteMovie={addFavoriteMovie}/>}/>
+                            element={<SearchPage/>}/>
 
                         <Route path='/register' element={<RegisterScreen/>}/>
 
