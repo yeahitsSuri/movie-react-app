@@ -109,27 +109,40 @@ function ProfilePage() {
 
                              {/* role */}
                              <div className="row mt-3">
-                                 <div className="col-3">
-                                     <label>Role</label>
-                                 </div>
-                                 <div className="col">
-                                     <div className="btn-group btn-group-toggle" data-toggle="buttons">
-                                         <label className={`btn btn-secondary ${profile.role === 'User'
-                                                                                ? 'active' : ''}`}>
-                                             <input type="radio" name="roles" id="user"
-                                                    checked={profile.role === "user"} disabled/>
-                                             User
-                                         </label>
-                                         <label className={`btn btn-secondary ${profile.role === 'Admin'
-                                                                                ? 'active' : ''}`}>
-                                             <input type="radio" name="roles" id="admin"
-                                                    checked={profile.role === 'admin'} disabled/>
-                                             Admin
-                                         </label>
-                                     </div>
-                                 </div>
-                                 <span className="hint-text">Role cannot be changed.</span>
-                             </div>
+                                <div className="col-3">
+                                    <label>Role</label>
+                                </div>
+                                <div className="col">
+                                    <div className="btn-group btn-group-toggle" data-toggle="buttons">
+                                    <label
+                                        className={`btn btn-secondary ${profile.role === 'User' ? 'active' : ''}`}
+                                    >
+                                        <input
+                                        type="radio"
+                                        name="roles"
+                                        id="user"
+                                        checked={profile.role === 'user'}
+                                        disabled
+                                        />
+                                        User
+                                    </label>
+                                    <label
+                                        className={`btn btn-secondary ${profile.role === 'Admin' ? 'active' : ''}`}
+                                    >
+                                        <input
+                                        type="radio"
+                                        name="roles"
+                                        id="admin"
+                                        checked={profile.role === 'admin'}
+                                        disabled
+                                        />
+                                        Admin
+                                    </label>
+                                    </div>
+                                    <br/>
+                                    <span className="hint-text mt-2">Role cannot be changed.</span>
+                                </div>
+                            </div>
 
                              {/* first name */}
                              <div className="row mt-3">

@@ -9,42 +9,43 @@ import {updateUserThunk} from '../services/auth-thunks';
 
 export const addToList = (movie, currentUser, dispatch, navigate) => {
     if (!currentUser) {
-        alert("Please log in to add a movie to your favorites!");
-        navigate("/login");  // the login page provides a registration link for the user anyway
+      alert("Please log in to add a movie to your favorites!");
+      navigate("/login");
     } else if (currentUser) {
-        const movieFavoredByUsers = localStorage.getItem(movie.imdbID);
-        const movieFavoredByUsersList = JSON.parse(movieFavoredByUsers);
-        if (movieFavoredByUsers) {
-            const newMovieFavoredByUsers = [currentUser, ...movieFavoredByUsersList];
-            localStorage.setItem(movie.imdbID, JSON.stringify(newMovieFavoredByUsers));
-        } else { // if the list is null, create a new array
-            const newMovieFavoredByUsers = [currentUser];
-            localStorage.setItem(movie.imdbID, JSON.stringify(newMovieFavoredByUsers));
+      const movieFavoredByUsers = localStorage.getItem(movie.imdbID);
+      const movieFavoredByUsersList = JSON.parse(movieFavoredByUsers);
+      if (movieFavoredByUsers) {
+        const newMovieFavoredByUsers = [currentUser, ...movieFavoredByUsersList];
+        localStorage.setItem(movie.imdbID, JSON.stringify(newMovieFavoredByUsers));
+      } else {
+        const newMovieFavoredByUsers = [currentUser];
+        localStorage.setItem(movie.imdbID, JSON.stringify(newMovieFavoredByUsers));
+      }
+  
+      const isAlreadyInList = currentUser.list.some(
+        (favorite) => favorite.imdbID === movie.imdbID
+      );
+  
+      if (isAlreadyInList) {
+        alert("You already have this movie in your list!");
+      }
+  
+      if (!isAlreadyInList) {
+        const newList = [movie, ...currentUser.list];
+  
+        if (currentUser.role === "admin") {
+          localStorage.setItem("admin-favorites", JSON.stringify(newList));
         }
-
-        // Check if the movie is already in the favorites list
-        const isAlreadyInList = currentUser.list.some((favorite) => favorite.imdbID === movie.imdbID);
-
-        if (isAlreadyInList) {
-            alert("You already have this movie in your list!");
-        }
-
-        // If the movie is not already in the favorites list, add it
-        if (!isAlreadyInList) {
-            const newList = [...currentUser.list, movie];
-
-            if (currentUser.role === "admin") {
-                localStorage.setItem("admin-favorites", JSON.stringify(newList));
-            }
-
-            const updatedCurrentUser = {
-                ...currentUser,
-                list: newList,
-            };
-            dispatch(updateUserThunk({ userId: currentUser._id, user: updatedCurrentUser }));
-        }
+  
+        const updatedCurrentUser = {
+          ...currentUser,
+          list: newList,
+        };
+        dispatch(updateUserThunk({ userId: currentUser._id, user: updatedCurrentUser }));
+      }
     }
-};
+  };
+  
 
 const SearchPage = () => {
     const location = useLocation();
