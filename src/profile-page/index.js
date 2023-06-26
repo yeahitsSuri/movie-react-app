@@ -238,6 +238,7 @@ function ProfilePage() {
                                  <div className="col">
                                      <button className="btn btn-danger" onClick={() => {
                                          dispatch(logoutThunk());
+                                         localStorage.setItem("last-search", "");
                                          navigate("/login");
                                      }}>
                                          Logout

@@ -4,7 +4,7 @@ import MovieList from '../components/MovieList';
 import MovieListHeader from '../components/MovieListHeader';
 import AddFavorites from '../components/AddFavorites';
 import {useDispatch, useSelector} from 'react-redux';
-import {useNavigate} from 'react-router-dom';
+import {useNavigate, useLocation} from 'react-router-dom';
 import {updateUserThunk} from '../services/auth-thunks';
 
 export const addToList = (movie, currentUser, dispatch, navigate) => {
@@ -47,9 +47,11 @@ export const addToList = (movie, currentUser, dispatch, navigate) => {
 };
 
 const SearchPage = () => {
+    const location = useLocation();
+    const searchKey = new URLSearchParams(location.search).get('searchKey') || '';
+    const [search, setSearch] = useState(searchKey || '');
     const {currentUser} = useSelector((state) => state.user);
     const [movies, setMovies] = useState([]);
-    const [searchKey, setSearchKey] = useState('');
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const showSearchResultsHeader = movies.length > 0;
@@ -59,8 +61,19 @@ const SearchPage = () => {
         return favoritesList.some((favorite) => favorite.imdbID === movie.imdbID)
     };
 
-    const getMovieFromAPI = async (searchKey) => {
-        const url = `http://www.omdbapi.com/?s=${searchKey}&apikey=a52e368a`;
+    useEffect(() => {
+        const lastSearch = localStorage.getItem('last-search');
+        if (lastSearch !== "") {
+            setSearch(lastSearch);
+            navigate(`/search?searchKey=${lastSearch}`);
+        } else if (lastSearch === "" || !lastSearch) {
+            setSearch(lastSearch);
+            navigate(`/search`);
+        }
+    }, []);
+
+    const getMovieFromAPI = async () => {
+        const url = `http://www.omdbapi.com/?s=${search}&type=movie&apikey=a52e368a`;
         const response = await fetch(url);
         const responseJson = await response.json();
 
@@ -70,29 +83,8 @@ const SearchPage = () => {
     };
 
     useEffect(() => {
-        const storedSearchKey = localStorage.getItem('search-key');
-        const storedMovies = JSON.parse(localStorage.getItem('search-results'));
-
-        if (storedSearchKey) {
-            setSearchKey(storedSearchKey);
-        }
-
-        if (storedMovies) {
-            setMovies(storedMovies);
-        }
-    }, []);
-
-    useEffect(() => {
-        localStorage.setItem('search-key', searchKey);
-    }, [searchKey]);
-
-    useEffect(() => {
-        localStorage.setItem('search-results', JSON.stringify(movies));
-    }, [movies]);
-
-    useEffect(() => {
-        getMovieFromAPI(searchKey);
-    }, [searchKey]);
+        getMovieFromAPI(search);
+    }, [search]);
 
     const handleAddFavoritesClick = (movie) => {
         if (isMovieInFavorites(movie)) {
@@ -105,13 +97,13 @@ const SearchPage = () => {
     return (
         <div>
             <div className='row d-flex align-items-center mt-3 mb-2'>
-                <MovieListHeader header={'Search for "' + searchKey + '": '}/>
+                <MovieListHeader header={'Search for "' + search + '": '}/>
             </div>
             <div className='row d-flex align-items-center mt-1 mb-4'>
-                <SearchBar searchKey={searchKey} setSearchKey={setSearchKey}/>
+                <SearchBar searchKey={search} setSearchKey={setSearch}/>
             </div>
 
-            {showSearchResultsHeader && (
+            {showSearchResultsHeader && search !== "" && (
                 <div>
                     <div className='row d-flex align-items-center mt-3 mb-4'>
                         <MovieListHeader header='Searching Results: '/>

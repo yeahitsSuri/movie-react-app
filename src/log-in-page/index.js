@@ -14,6 +14,7 @@ function LoginScreen() {
             if (response.error) {
                 alert(response.payload.message);
             } else {
+                localStorage.setItem("last-search", "");
                 navigate("/profile");
             }
         } catch (e) {
