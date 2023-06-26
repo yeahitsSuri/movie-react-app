@@ -1,14 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import {useDispatch} from "react-redux";
+import { useParams, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector} from "react-redux";
 import DetailsUserList from "../components/DetailsUserList";
+import { addToList } from '../search-page';
 
 const MovieIntroScreen = () => {
   const { id } = useParams();
   const [movieDetails, setMovieDetails] = useState(null);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const thisMovieFavoredBy = localStorage.getItem(id);
   const thisMovieFavoredByList = thisMovieFavoredBy ? JSON.parse(thisMovieFavoredBy) : [];
+
+  const currentUser = useSelector((state) => state.user.currentUser); // Get the currentUser from Redux state
+
+  const handleAddToFavorites = () => {
+    addToList(movieDetails, currentUser, dispatch, navigate);
+  };
 
   useEffect(() => {
     const fetchMovieDetails = async () => {
@@ -33,6 +41,10 @@ const MovieIntroScreen = () => {
     <div className='row mt-3'>
       <div className='col-md-4 d-none d-md-block d-lg-block d-xl-block d-xxl-block list-group'>
         <img src={movieDetails.Poster} alt={movieDetails.Title} style={{ width: '100%' }} />
+        <button onClick={handleAddToFavorites} className="btn btn-primary btn-lg mt-2" 
+          style={{ width: '100%' , color: 'white'}}>
+          {currentUser.role === "admin" ? "Add to Recommends" : "Add to Favorites"}
+        </button>
       </div>
       <div className='col-md-6'>
         <h1>{movieDetails.Title}</h1>
