@@ -262,6 +262,13 @@ function ProfilePage() {
                                  </div>
                              </div>
 
+                             {/* Save button */}
+                             <div className="row mt-3">
+                                 <div className="col">
+                                     <button className="btn btn-primary" onClick={save}>Save</button>
+                                 </div>
+                             </div>
+
                              <div className="row mt-3">
                                  <h3>Your Favorites</h3>
                                  <MovieList movies={currentUser.list}
@@ -281,13 +288,6 @@ function ProfilePage() {
                                      }}>
                                          Logout
                                      </button>
-                                 </div>
-                             </div>
-
-                             {/* Save button */}
-                             <div className="row mt-3">
-                                 <div className="col">
-                                     <button className="btn btn-primary" onClick={save}>Save</button>
                                  </div>
                              </div>
                          </div>
