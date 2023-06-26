@@ -1,13 +1,18 @@
 // this is used to render other people's profile page
 import React, {useEffect, useState} from "react";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import MovieList from "../components/MovieList";
+import {addToList} from "../search-page";
+import {useDispatch} from "react-redux";
+import AddFavorites from "../components/AddFavorites";
 
 const SERVER_API_URL = process.env.REACT_APP_SERVER_API_URL;
 const USERS_URL = `${SERVER_API_URL}/api/users`;
 
 const OtherProfile = () => {
-    const { id } = useParams();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const {id} = useParams();
     const [loading, setLoading] = useState(true);
     const [userData, setUserData] = useState(null);
 
@@ -31,6 +36,10 @@ const OtherProfile = () => {
         return <div>This user doesn't exist!</div>;
     }
 
+    const handleAddFavoritesClick = (movie) => {
+        addToList(movie, userData, dispatch, navigate);
+    }
+
     return (
         <div className="container">
             <div className="row mt-3">
@@ -38,7 +47,7 @@ const OtherProfile = () => {
                     <label>Username</label>
                 </div>
                 <div className="col-9">
-                    <input className="form-control" type="text" value={userData.username} disabled />
+                    <input className="form-control" type="text" value={userData.username} disabled/>
                 </div>
             </div>
 
@@ -68,7 +77,8 @@ const OtherProfile = () => {
                      <label>First Name</label>
                  </div>
                  <div className="col-9">
-                     <input className="form-control" type="text" value={userData.firstName} disabled />
+                     <input className="form-control" type="text" value={userData.firstName}
+                            disabled/>
                  </div>
              </div>}
 
@@ -78,7 +88,8 @@ const OtherProfile = () => {
                      <label>Last Name</label>
                  </div>
                  <div className="col-9">
-                     <input className="form-control" type="text" value={userData.lastName} disabled />
+                     <input className="form-control" type="text" value={userData.lastName}
+                            disabled/>
                  </div>
              </div>}
 
@@ -88,17 +99,19 @@ const OtherProfile = () => {
                      <label>Email</label>
                  </div>
                  <div className="col-9">
-                     <input className="form-control" type="text" value={userData.email} disabled />
+                     <input className="form-control" type="text" value={userData.email} disabled/>
                  </div>
              </div>}
 
             {userData.showList &&
              <div className="row mt-3">
-                 <MovieList movies={userData.list}/>
+                 <h3>Their Favorites</h3>
+                 <MovieList movies={userData.list}
+                            handleFavoritesClick={handleAddFavoritesClick}
+                            favoriteIcon={AddFavorites}/>
              </div>}
         </div>
     );
 };
-
 
 export default OtherProfile;

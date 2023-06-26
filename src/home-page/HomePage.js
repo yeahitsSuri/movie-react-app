@@ -5,6 +5,9 @@ import RemoveFavorites from '../components/RemoveFavorites';
 import {useSelector} from "react-redux";
 import {updateUserThunk} from "../services/auth-thunks";
 import {useDispatch} from "react-redux";
+import {addToList} from "../search-page";
+import {useNavigate} from "react-router-dom";
+import AddFavorites from "../components/AddFavorites";
 
 export const removeFavoriteMovie = (movie, currentUser, dispatch) => {
     // first fetch the list of users that favor this movie
@@ -33,13 +36,17 @@ export const removeFavoriteMovie = (movie, currentUser, dispatch) => {
 
 const HomePage = () => {
     const {currentUser} = useSelector((state) => state.user);
-    const [list, setList] = useState(currentUser ? currentUser.list : []);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const adminFavorites = localStorage.getItem("admin-favorites");
     const adminFavoritesList = JSON.parse(adminFavorites);
 
-    const handleFavoritesClick = (movie) => {
+    const handleRemoveFavoritesClick = (movie) => {
         removeFavoriteMovie(movie, currentUser, dispatch);
+    }
+
+    const handleAddFavoritesClick = (movie) => {
+        addToList(movie, currentUser, dispatch, navigate);
     }
    
     return (
@@ -52,8 +59,8 @@ const HomePage = () => {
             <div className='row'>
                 <MovieList
                     movies={adminFavoritesList}
-                    handleFavoritesClick={removeFavoriteMovie}
-                    favoriteIcon={RemoveFavorites}
+                    handleFavoritesClick={handleAddFavoritesClick}
+                    favoriteIcon={AddFavorites}
                 />
             </div>
 
@@ -65,7 +72,7 @@ const HomePage = () => {
             <div className='row'>
                 <MovieList
                 movies={currentUser ? currentUser.list : []}
-                handleFavoritesClick={handleFavoritesClick}
+                handleFavoritesClick={handleRemoveFavoritesClick}
                 favoriteIcon={RemoveFavorites}
                 />
             </div>

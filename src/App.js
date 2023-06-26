@@ -58,7 +58,7 @@ const App = () => {
 
                         <Route path="/profile" element={<ProfilePage/>}/>
 
-                        {/*<Route path="/profile/:id" element={<OtherProfile/>}/>*/}
+                        <Route path="/profile/:id" element={<OtherProfile/>}/>
                     </Routes>
                 </div>
             </Provider>
