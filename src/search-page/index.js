@@ -43,6 +43,7 @@ export const addToList = (movie, currentUser, dispatch, navigate) => {
                 ...currentUser,
                 list: newList,
             };
+            alert("Added successfully!");
             dispatch(updateUserThunk({userId: currentUser._id, user: updatedCurrentUser}));
         }
     }

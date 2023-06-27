@@ -30,6 +30,7 @@ export const removeFavoriteMovie = (movie, currentUser, dispatch) => {
         ...currentUser,
         list: newList,
     };
+    alert("Removed successfully!");
     dispatch(updateUserThunk({userId: currentUser._id, user: updatedCurrentUser}));
 };
 
